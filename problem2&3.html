@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	 <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+   <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+	 <meta charset="utf-8">
+	 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" >
+var app=angular.module("myapp",[]);
+
+app.controller("myctrl",function($scope,$cacheFactory){
+$scope.keys=[];
+    $scope.keyval="";
+    $scope.cache=$cacheFactory('cacheId');
+    $scope.put=function(key,value)
+    {
+      
+        if(angular.isUndefined($scope.cache.get(key)))
+            {
+                 
+                $scope.cache.put(key,value);
+                $scope.keys.push(key);
+            }
+    };
+    $scope.remove=function(keyval)
+    {
+      $scope.cache.remove(keyval);
+    };
+    
+     $scope.removeall=function(keyval)
+    {
+      $scope.cache.removeAll();
+    };
+     $scope.destroy=function(keyval)
+    {
+      $scope.cache.destroy();
+    };
+
+
+});
+
+</script>
+</head>
+
+<body>
+    <div ng-app="myapp" ng-controller="myctrl">
+        <div class="panel">
+            <h2>Add cache Key</h2>
+Enter Cache Key: <input ng-model="key" type="text" name"key"/>
+    <br><br>
+    
+    Enter Cache Value:<input ng-model="value" type="text" name"cache"/>
+<br><br>
+    <button type="button" ng-click="put(key,value)">Add Cache</button>
+</div>
+        <div class="panel">
+             <h2>Remove cache Key</h2>
+        Enter key : <input type="text" ng-model="keyval"/>
+            <button type="button" ng-click="remove(keyval)">Remove Cache Key</button>
+            <br><br>
+            <button type="button" ng-click="removeall()">Remove all cache</button>
+            <br><br>
+            <button type="button" ng-click="destroy()">Destroy cache</button>
+        </div>
+    
+    <h3>Cache table</h3>
+    <table class="table">
+    <thead>
+        <tr>
+        <th>Cache Key</th>
+        <th>Cache value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="key in keys ">
+            <td>{{key}}</td>
+            <td>{{cache.get(key)}}</tr></tbody>
+    </table>
+ <h3>Cache Info  table</h3>
+    <table class="table">
+    <thead>
+        <tr>
+        <th>Cache Key</th>
+        <th>Cache value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(key,value) in cache.info() ">
+            <td>{{key}}</td>
+            <td>{{value}}</tr></tbody>
+    </table>
+
+</div>
+
+
+</body>
+
+</html>
